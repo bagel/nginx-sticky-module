@@ -293,13 +293,13 @@ ngx_int_t ngx_http_sticky_misc_text_ipaddr(ngx_pool_t *pool, struct sockaddr *in
         struct sockaddr_in  *sin;
         sin = (struct sockaddr_in *) in;
         p = (u_char *) &sin->sin_addr;
-        len = NGX_INET_ADDRSTRLEN / 2 + 3;
+        len = NGX_INET_ADDRSTRLEN / 2 + 4;
         digest->data = ngx_pnalloc(pool, len);
         if (digest->data == NULL) {
                 return NGX_ERROR;
         }
-        ngx_snprintf(digest->data, len, "dp%ud_%ud", p[2], p[3]);
-        digest->len = len;
+        p = ngx_snprintf(digest->data, len, "dp%ud_%ud", p[2], p[3]);
+        digest->len = p - digest->data;
         return NGX_OK;
         return NGX_OK;
 }
